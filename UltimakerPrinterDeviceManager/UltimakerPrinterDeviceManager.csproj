@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-UltimakerPrinterDeviceManager-e2a669fd-3c23-439c-b4a2-ac82494980d2</UserSecretsId>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-UltimakerPrinterDeviceManager-e2a669fd-3c23-439c-b4a2-ac82494980d2</UserSecretsId>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Aspire.RabbitMQ.Client" Version="9.2.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Aspire.RabbitMQ.Client" Version="9.2.1"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\UltimakerManager.ServiceDefaults\UltimakerManager.ServiceDefaults.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\UltimakerManager.ServiceDefaults\UltimakerManager.ServiceDefaults.csproj"/>
+    </ItemGroup>
 </Project>

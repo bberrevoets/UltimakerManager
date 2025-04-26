@@ -1,11 +1,15 @@
+#region
+
 using Projects;
+
+#endregion
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var username = builder.AddParameter("rmq-username", secret: true);
-var password = builder.AddParameter("rmq-password", secret: true);
+var username = builder.AddParameter("rmq-username", true);
+var password = builder.AddParameter("rmq-password", true);
 
-var rmq = builder.AddRabbitMQ("rmq", userName: username, password: password)
+var rmq = builder.AddRabbitMQ("rmq", username, password)
     .WithDataVolume().WithManagementPlugin();
 
 builder.AddProject<PrinterDiscoveryService>("printerdiscoveryservice")

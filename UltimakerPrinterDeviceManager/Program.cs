@@ -9,6 +9,8 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.AddSeqEndpoint("seq");
+
 builder.AddRabbitMQClient("rmq");
 
 builder.Services.AddSingleton<IPrinterRepository, PrinterRepository>();

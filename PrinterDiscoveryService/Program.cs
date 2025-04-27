@@ -6,6 +6,8 @@ using PrinterDiscoveryService;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+builder.AddSeqEndpoint("seq");
+
 builder.AddServiceDefaults();
 
 builder.AddRabbitMQClient("rmq");

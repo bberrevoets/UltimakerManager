@@ -76,7 +76,37 @@ public class DiscoverWorker : BackgroundService
                 }
             else if (answer is SRVRecord srv) printer.Port = srv.Port;
 
-            printer.IpAddress = e.RemoteEndPoint.Address.ToString();
+            var ip = e.RemoteEndPoint.Address.ToString();
+            _logger.LogDebug("Discovered IP: {ip}", ip);
+
+            if (string.IsNullOrWhiteSpace(ip))
+                continue;
+
+            if (ip.Contains(':'))
+            {
+                if (!string.IsNullOrWhiteSpace(printer.IPv6Address))
+                    continue;
+                printer.IPv6Address = $"[{ip}]";
+                _logger.LogDebug("Assigned IPv6Address: {IPv6Address}", printer.IPv6Address);
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(printer.IPv4Address))
+                    continue;
+                printer.IPv4Address = ip;
+                _logger.LogDebug("Assigned IPv4Address: {IPv4Address}", printer.IPv4Address);
+            }
+        }
+
+        if (string.IsNullOrEmpty(printer.Name) || printer.Port == 0 ||
+            (string.IsNullOrWhiteSpace(printer.IPv4Address) && string.IsNullOrWhiteSpace(printer.IPv6Address)))
+        {
+            _logger.LogWarning(
+                "Received invalid printer data: {MachineType}, {name} at {ip}:{port} with FirmwareVersion {Version}",
+                printer.MachineType, printer.Name,
+                string.IsNullOrWhiteSpace(printer.IPv4Address) ? printer.IPv6Address : printer.IPv4Address,
+                printer.Port.ToString(), printer.FirmwareVersion);
+            return;
         }
 
         var body = JsonSerializer.SerializeToUtf8Bytes(printer);
@@ -86,7 +116,8 @@ public class DiscoverWorker : BackgroundService
         _logger.LogInformation(
             "Published printer: Type: {MachineType}, {name} at {ip}:{port} with FirmwareVersion {Version}",
             printer.MachineType, printer.Name,
-            printer.IpAddress, printer.Port.ToString(), printer.FirmwareVersion);
+            string.IsNullOrWhiteSpace(printer.IPv4Address) ? printer.IPv6Address : printer.IPv4Address,
+            printer.Port.ToString(), printer.FirmwareVersion);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

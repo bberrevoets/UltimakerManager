@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.RabbitMQ.Client" Version="9.2.1"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4"/>
+        <PackageReference Include="Aspire.RabbitMQ.Client" Version="9.2.1" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\UltimakerManager.ServiceDefaults\UltimakerManager.ServiceDefaults.csproj"/>
+        <ProjectReference Include="..\UltimakerManager.ServiceDefaults\UltimakerManager.ServiceDefaults.csproj" />
     </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var seq = builder.AddSeq("seq")
     .ExcludeFromManifest()
+    .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent)
     .WithEnvironment("ACCEPT_EULA", "Y");
 

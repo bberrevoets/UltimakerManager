@@ -32,6 +32,16 @@ Author: *Bert Berrevoets*
 - Added `.markdownlint.jsonc` enforcing a 120-character line limit, with relaxations for
   Keep-a-Changelog duplicate sub-headings (`MD024 siblings_only`) and GFM table pipe alignment
   (`MD060` disabled).
+- Upgraded all four projects from `net9.0` to `net10.0`.
+- Upgraded the Aspire stack from 9.x to 13.2.4 (`Aspire.AppHost.Sdk`, `Aspire.Hosting.AppHost`,
+  `Aspire.Hosting.RabbitMQ`, `Aspire.Hosting.Seq`, `Aspire.RabbitMQ.Client`, `Aspire.Seq`).
+- Bumped `Microsoft.Extensions.Hosting` 9.0.4 → 10.0.7, `Microsoft.Extensions.Http.Resilience`
+  and `Microsoft.Extensions.ServiceDiscovery` 9.0.0 → 10.5.0, and the OpenTelemetry
+  instrumentation packages 1.9.0 → 1.15.x to match the already-bumped exporter.
+- Migrated both worker services to `RabbitMQ.Client` 7.x: `IModel` → `IChannel`, all queue and
+  publish/consume operations now async (`CreateChannelAsync`, `QueueDeclareAsync`,
+  `BasicPublishAsync`, `BasicConsumeAsync`, `BasicAckAsync`), and `EventingBasicConsumer` →
+  `AsyncEventingBasicConsumer` with the new `ReceivedAsync` event handler.
 
 ## [2026-04-30]
 

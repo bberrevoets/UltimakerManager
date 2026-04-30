@@ -29,7 +29,7 @@ dotnet user-secrets --project UltimakerManager.AppHost set Parameters:rmq-passwo
 
 ## Architecture
 
-.NET 9 + .NET Aspire 9.x. Four projects in one solution:
+.NET 10 + .NET Aspire 13.x. Four projects in one solution:
 
 - [UltimakerManager.AppHost](UltimakerManager.AppHost/) — Aspire orchestrator. Composes the
   whole system: starts Seq (logs) and RabbitMQ (with management plugin + persistent data

@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>dotnet-PrinterDiscoveryService-99e24621-8f7b-4054-80f1-1078907a41ce</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.RabbitMQ.Client" Version="9.2.1" />
-        <PackageReference Include="Aspire.Seq" Version="9.2.1" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
+        <PackageReference Include="Aspire.RabbitMQ.Client" Version="13.2.4" />
+        <PackageReference Include="Aspire.Seq" Version="13.2.4" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
         <PackageReference Include="Makaretu.Dns" Version="2.0.1" />
         <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />
     </ItemGroup>

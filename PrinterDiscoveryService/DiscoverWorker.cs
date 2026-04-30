@@ -14,26 +14,13 @@ public class DiscoverWorker : BackgroundService
     private readonly IConnection _connection;
     private readonly ILogger<DiscoverWorker> _logger;
     private readonly MulticastService _mdns = new();
-    private IModel? _channel;
-    private Message? _query;
+    private readonly Message _query;
+    private IChannel? _channel;
 
     public DiscoverWorker(ILogger<DiscoverWorker> logger, IConnection connection)
     {
         _logger = logger;
         _connection = connection;
-
-        SetupMdnsDiscovery();
-    }
-
-    private void SetupMdnsDiscovery()
-    {
-        _channel = _connection.CreateModel();
-
-        _channel.QueueDeclare("discoveredPrinterEvents",
-            false,
-            false,
-            false,
-            null);
 
         _query = new Message();
         _query.Questions.Add(new Question
@@ -41,12 +28,11 @@ public class DiscoverWorker : BackgroundService
             Name = "_ultimaker._tcp.local",
             Type = DnsType.PTR
         });
-
-        _mdns.AnswerReceived += OnMdnsAnswerReceived;
     }
 
-    private void OnMdnsAnswerReceived(object? sender, MessageEventArgs e)
+    private async Task PublishAnswerAsync(MessageEventArgs e)
     {
+        if (_channel is null) return;
         if (e.Message.Answers.Count == 0) return;
 
         // check if it is an Ultimaker printer
@@ -110,8 +96,7 @@ public class DiscoverWorker : BackgroundService
         }
 
         var body = JsonSerializer.SerializeToUtf8Bytes(printer);
-        _channel.BasicPublish("", "discoveredPrinterEvents", null,
-            body);
+        await _channel.BasicPublishAsync("", "discoveredPrinterEvents", body);
 
         _logger.LogInformation(
             "Published printer: Type: {MachineType}, {name} at {ip}:{port} with FirmwareVersion {Version}",
@@ -122,15 +107,46 @@ public class DiscoverWorker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
+        await _channel.QueueDeclareAsync(
+            "discoveredPrinterEvents",
+            false,
+            false,
+            false,
+            null,
+            cancellationToken: stoppingToken);
+
+        _mdns.AnswerReceived += async (_, e) =>
+        {
+            try
+            {
+                await PublishAnswerAsync(e);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing mDNS answer");
+            }
+        };
+
         _mdns.Start();
 
-        while (!stoppingToken.IsCancellationRequested)
+        try
         {
-            _mdns.SendQuery(_query);
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                _mdns.SendQuery(_query);
 
-            await Task.Delay(30000, stoppingToken);
+                await Task.Delay(30000, stoppingToken);
+            }
         }
-
-        _mdns.Stop();
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        {
+        }
+        finally
+        {
+            _mdns.Stop();
+            await _channel.CloseAsync(CancellationToken.None);
+            await _channel.DisposeAsync();
+        }
     }
 }

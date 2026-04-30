@@ -18,8 +18,8 @@ public class PrinterManagerWorker : BackgroundService
     private readonly IPrinterApiClient _printerApiClient;
     private readonly IPrinterRepository _printerRepository;
 
-    private IModel? _channel;
-    private EventingBasicConsumer? _consumer;
+    private IChannel? _channel;
+    private AsyncEventingBasicConsumer? _consumer;
 
     public PrinterManagerWorker(ILogger<PrinterManagerWorker> logger, IConnection connection,
         IPrinterRepository printerRepository, IPrinterApiClient printerApiClient)
@@ -30,7 +30,7 @@ public class PrinterManagerWorker : BackgroundService
         _printerApiClient = printerApiClient;
     }
 
-    private async Task ProcessMessageAsync(object? sender, BasicDeliverEventArgs e)
+    private async Task ProcessMessageAsync(object sender, BasicDeliverEventArgs e)
     {
         try
         {
@@ -40,7 +40,8 @@ public class PrinterManagerWorker : BackgroundService
             if (discoveredPrinter == null)
             {
                 _logger.LogWarning("Received an invalid printer message");
-                _channel?.BasicAck(e.DeliveryTag, false);
+                if (_channel is not null)
+                    await _channel.BasicAckAsync(e.DeliveryTag, false);
                 return;
             }
 
@@ -48,14 +49,16 @@ public class PrinterManagerWorker : BackgroundService
                 string.IsNullOrEmpty(discoveredPrinter.IPv6Address))
             {
                 _logger.LogWarning("Discovered printer is missing IP address");
-                _channel?.BasicAck(e.DeliveryTag, false);
+                if (_channel is not null)
+                    await _channel.BasicAckAsync(e.DeliveryTag, false);
                 return;
             }
 
             if (discoveredPrinter.Port == 0 || string.IsNullOrEmpty(discoveredPrinter.Name))
             {
                 _logger.LogWarning("Discovered printer is missing port or name");
-                _channel?.BasicAck(e.DeliveryTag, false);
+                if (_channel is not null)
+                    await _channel.BasicAckAsync(e.DeliveryTag, false);
                 return;
             }
 
@@ -90,7 +93,8 @@ public class PrinterManagerWorker : BackgroundService
                 string.IsNullOrEmpty(ultimakerPrinter.IPv6Address))
             {
                 _logger.LogWarning("UltimakerPrinter is missing IP address");
-                _channel?.BasicAck(e.DeliveryTag, false);
+                if (_channel is not null)
+                    await _channel.BasicAckAsync(e.DeliveryTag, false);
                 return;
             }
 
@@ -108,12 +112,14 @@ public class PrinterManagerWorker : BackgroundService
                 ultimakerPrinter.UniqueIdentifier,
                 ultimakerPrinter.IsOnline ? "online" : "offline");
 
-            _channel?.BasicAck(e.DeliveryTag, false);
+            if (_channel is not null)
+                await _channel.BasicAckAsync(e.DeliveryTag, false);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error processing printer message");
-            _channel?.BasicAck(e.DeliveryTag, false); // Ack anyway to avoid message buildup
+            if (_channel is not null)
+                await _channel.BasicAckAsync(e.DeliveryTag, false); // Ack anyway to avoid message buildup
         }
     }
 
@@ -122,14 +128,14 @@ public class PrinterManagerWorker : BackgroundService
         _logger.LogInformation("PrinterManagerWorker starting...");
 
         // Setup RabbitMQ
-        _channel = _connection.CreateModel();
-        _channel.QueueDeclare("discoveredPrinterEvents", false, false, false, null);
-        _consumer = new EventingBasicConsumer(_channel);
+        _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
+        await _channel.QueueDeclareAsync("discoveredPrinterEvents", false, false, false, null,
+            cancellationToken: stoppingToken);
+        _consumer = new AsyncEventingBasicConsumer(_channel);
 
-        // Use async delegate for message processing
-        _consumer.Received += (sender, e) => { _ = ProcessMessageAsync(sender, e); };
+        _consumer.ReceivedAsync += ProcessMessageAsync;
 
-        _channel.BasicConsume("discoveredPrinterEvents", false, _consumer);
+        await _channel.BasicConsumeAsync("discoveredPrinterEvents", false, _consumer, stoppingToken);
         _logger.LogInformation("Started consuming RabbitMQ messages");
 
         // Start the printer status check timer
@@ -147,13 +153,15 @@ public class PrinterManagerWorker : BackgroundService
                 await CheckPrinterStatusesAsync(stoppingToken);
             }
         }
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        {
+        }
         finally
         {
             // Cleanup
-            // ReSharper disable once EventUnsubscriptionViaAnonymousDelegate
-            _consumer.Received -= (sender, e) => { _ = ProcessMessageAsync(sender, e); };
-            _channel?.Close();
-            _channel?.Dispose();
+            _consumer.ReceivedAsync -= ProcessMessageAsync;
+            await _channel.CloseAsync(CancellationToken.None);
+            await _channel.DisposeAsync();
             _logger.LogInformation("Stopped consuming RabbitMQ messages");
         }
     }

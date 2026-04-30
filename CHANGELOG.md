@@ -24,7 +24,14 @@ Author: *Bert Berrevoets*
 
 Author: *Bert Berrevoets*
 
-- `.gitignore` now excludes the local `.claude/` directory.
+- Replaced `.gitignore` with the canonical
+  [GitHub VisualStudio.gitignore](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore)
+  template plus project-specific entries for JetBrains Rider (`.idea/`, `*.iml`, `riderModule.iml`)
+  and the local `.claude/` agent workspace.
+- Untracked the previously committed `.idea/` files; they are now correctly ignored.
+- Added `.markdownlint.jsonc` enforcing a 120-character line limit, with relaxations for
+  Keep-a-Changelog duplicate sub-headings (`MD024 siblings_only`) and GFM table pipe alignment
+  (`MD060` disabled).
 
 ## [2026-04-30]
 

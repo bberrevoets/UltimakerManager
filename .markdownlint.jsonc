@@ -1,0 +1,18 @@
+{
+  // Shared markdownlint config. Read by both `markdownlint-cli` and `markdownlint-cli2`.
+  // Rule reference: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+  "default": true,
+  "MD013": {
+    "line_length": 120,
+    "code_blocks": false,
+    "tables": false
+  },
+  // Keep a Changelog reuses "Added" / "Changed" / "Fixed" sub-headings under each version.
+  // Allow duplicates as long as they're not direct siblings.
+  "MD024": {
+    "siblings_only": true
+  },
+  // Pipe-alignment of GitHub Flavored Markdown tables is rendered identically regardless of
+  // padding. Enforcing visual alignment requires a formatter; not worth the manual effort.
+  "MD060": false
+}

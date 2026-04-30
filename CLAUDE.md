@@ -22,7 +22,7 @@ running because AppHost provisions Seq and RabbitMQ as persistent-lifetime conta
 `rmq-password`, used to bring up the RabbitMQ container. Set them via user-secrets on the
 AppHost project before first run:
 
-```
+```bash
 dotnet user-secrets --project UltimakerManager.AppHost set Parameters:rmq-username <user>
 dotnet user-secrets --project UltimakerManager.AppHost set Parameters:rmq-password <pass>
 ```
@@ -56,7 +56,7 @@ dotnet user-secrets --project UltimakerManager.AppHost set Parameters:rmq-passwo
 
 ### Data flow
 
-```
+```text
 mDNS (LAN) → PrinterDiscoveryService → RabbitMQ "discoveredPrinterEvents"
                                             ↓
                               UltimakerPrinterDeviceManager

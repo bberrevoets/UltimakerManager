@@ -2,7 +2,7 @@
 
 Distributed background service that discovers Ultimaker 3D printers on the local
 network via mDNS and continuously enriches their state by polling the Ultimaker
-HTTP API. Built on .NET 9 and orchestrated with [.NET Aspire](https://learn.microsoft.com/dotnet/aspire/).
+HTTP API. Built on .NET 10 and orchestrated with [.NET Aspire](https://learn.microsoft.com/dotnet/aspire/).
 
 ## Architecture
 
@@ -23,7 +23,7 @@ mDNS (LAN) → PrinterDiscoveryService → RabbitMQ "discoveredPrinterEvents"
 
 ## Prerequisites
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/download)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - Docker Desktop (Aspire provisions Seq and RabbitMQ as containers)
 - An Ultimaker printer reachable on the local network (for end-to-end testing)
 

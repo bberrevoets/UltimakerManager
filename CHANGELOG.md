@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Bert Berrevoets <bert@berrevoets.net>
 - @dependabot
+- Claude Opus 4.7 -- co-author of the 2026-04 docs and .NET 10 upgrade
+- Claude Opus 5.5 -- co-author of the 2026-11 AI agent setup
 
 ## [Unreleased]
 
@@ -15,7 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Author: *Bert Berrevoets*
 
-- `CLAUDE.md` with architecture and command guidance for AI assistants working in the repo.
+- `CLAUDE.md` with architecture and command guidance for AI assistants working in the repo (moved to `AGENTS.md`
+  in the 2026-11 AI agent setup, see below).
 - `CHANGELOG.md` (this file).
 - Expanded `README.md` covering architecture, prerequisites, run instructions, and repo layout.
 - `UltimakerManager.code-workspace` checked into source control.
@@ -42,6 +45,12 @@ Author: *Bert Berrevoets*
   publish/consume operations now async (`CreateChannelAsync`, `QueueDeclareAsync`,
   `BasicPublishAsync`, `BasicConsumeAsync`, `BasicAckAsync`), and `EventingBasicConsumer` →
   `AsyncEventingBasicConsumer` with the new `ReceivedAsync` event handler.
+- AI agent setup (2026-11): the instructions moved from `CLAUDE.md` to `AGENTS.md` (single source for Claude Code,
+  Codex and other agents) with a `CLAUDE.md` stub that imports it, a Project Overview and Conventions section;
+  `.markdownlint.jsonc` became `.markdownlint.json` with a 180-character line limit (same rules otherwise);
+  `.gitattributes` with the standard Git LFS patterns; repo-init blocks in `.gitignore` (the tracked
+  `UltimakerManager.code-workspace` stays tracked through an exception line) and a Conventions section in
+  `README.md`.
 
 ## [2026-04-30]
 

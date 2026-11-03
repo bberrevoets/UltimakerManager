@@ -59,9 +59,22 @@ configuration key `PrinterRepository:DataPath`.
 - `PrinterDiscoveryService/` — mDNS discovery worker
 - `UltimakerPrinterDeviceManager/` — RMQ consumer + REST poller worker
 - `CHANGELOG.md` — release history
+- `AGENTS.md` — instructions for AI coding agents (`CLAUDE.md` only imports it)
 
-For deeper guidance aimed at AI assistants, see [CLAUDE.md](CLAUDE.md).
+For deeper guidance aimed at AI coding agents, see [AGENTS.md](AGENTS.md).
 
 ## License
 
 See [LICENSE.txt](LICENSE.txt).
+
+## Conventions
+
+- **Branching:** GitHub Flow. `main` is protected and accepts changes only through pull requests.
+- **Markdown:** linted with `markdownlint-cli2`, 180 character limit.
+
+  ```sh
+  npx markdownlint-cli2 "**/*.md"
+  ```
+
+- **Agent instructions:** in [AGENTS.md](AGENTS.md), read by Claude Code, Codex and any other coding agent.
+  `CLAUDE.md` only imports it, so edit `AGENTS.md`.

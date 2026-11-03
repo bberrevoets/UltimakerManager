@@ -1,0 +1,27 @@
+PrinterDiscoveryService/DiscoverWorker.cs
+  s_66be80588d2b7a::t_ea36e092a2ab41 111-112,115-118
+UltimakerManager.AppHost/Program.cs
+  s_66be80588d2b7a::t_244ec949ff4437 13-18
+AGENTS.md
+  s_66be80588d2b7a::t_7ceda7dc95d2ce 122-127
+CHANGELOG.md
+  s_66be80588d2b7a::t_63672acac5b26f 55-64
+UltimakerPrinterDeviceManager/PrinterManagerWorker.cs
+  s_66be80588d2b7a::t_532d150666ba44 132-135
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5a49be90d727b518a7ec4b856fae983f609ca966",
+  "prompts": {},
+  "sessions": {
+    "s_66be80588d2b7a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "26349a25-b31d-4ae6-bdbc-bb4d831f555b",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "B.N. Berrevoets <bert@berrevoets.net>"
+    }
+  }
+}

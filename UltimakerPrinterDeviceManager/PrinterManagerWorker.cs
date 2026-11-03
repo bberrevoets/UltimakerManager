@@ -129,8 +129,10 @@ public class PrinterManagerWorker : BackgroundService
 
         // Setup RabbitMQ
         _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
-        await _channel.QueueDeclareAsync("discoveredPrinterEvents", false, false, false, null,
-            cancellationToken: stoppingToken);
+        // Durable: RabbitMQ 4.3+ refuses transient non-exclusive queues (deprecated feature
+        // transient_nonexcl_queues). Must match the declaration in PrinterDiscoveryService.
+        await _channel.QueueDeclareAsync("discoveredPrinterEvents", durable: true, exclusive: false,
+            autoDelete: false, arguments: null, cancellationToken: stoppingToken);
         _consumer = new AsyncEventingBasicConsumer(_channel);
 
         _consumer.ReceivedAsync += ProcessMessageAsync;

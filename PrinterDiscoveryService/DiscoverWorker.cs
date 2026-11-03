@@ -108,12 +108,14 @@ public class DiscoverWorker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
+        // Durable: RabbitMQ 4.3+ refuses transient non-exclusive queues (deprecated feature
+        // transient_nonexcl_queues). Must match the declaration in UltimakerPrinterDeviceManager.
         await _channel.QueueDeclareAsync(
             "discoveredPrinterEvents",
-            false,
-            false,
-            false,
-            null,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null,
             cancellationToken: stoppingToken);
 
         _mdns.AnswerReceived += async (_, e) =>

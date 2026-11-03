@@ -119,6 +119,12 @@ shape are a breaking wire change — keep producer and consumer in sync.
   back via a fresh mDNS event, not via polling.
 - `UltimakerPrinter.UniqueIdentifier` is `Port:Name`, not the API-reported serial. Serial is
   populated *after* the first successful API call, so it cannot be used as the primary key.
+- The queue `discoveredPrinterEvents` is **durable** in both workers. RabbitMQ 4.3 (the image Aspire 13.6 starts)
+  refuses transient non-exclusive queues (`transient_nonexcl_queues`, error 541), and both declarations must match,
+  or the second one fails with `PRECONDITION_FAILED`.
+- The Seq endpoint is set to `IsProxied = true` in the AppHost. Aspire 13.6 publishes container ports on `127.0.0.1`
+  only, and its health check calls `http://localhost:<port>/health`, which Windows tries on `::1` first and times
+  out. Seq then stays Unhealthy and `WaitFor(seq)` never starts the workers. The DCP proxy also listens on `::1`.
 
 ## Conventions
 

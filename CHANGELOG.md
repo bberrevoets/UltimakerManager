@@ -52,6 +52,16 @@ Author: *Bert Berrevoets*
   `UltimakerManager.code-workspace` stays tracked through an exception line) and a Conventions section in
   `README.md`.
 
+### Fixed
+
+Author: *Bert Berrevoets*
+
+- The workers start again after the Aspire 13.6.4 upgrade (found in a test run on 2026-11-03):
+  - the Seq endpoint is proxied (`IsProxied = true`): Aspire 13.6 maps container ports to `127.0.0.1` only, the Seq
+    health check on `localhost` timed out on `::1`, and `WaitFor(seq)` kept both workers waiting;
+  - the queue `discoveredPrinterEvents` is declared durable in both workers: RabbitMQ 4.3, the new default image,
+    closed the connection with `541 INTERNAL_ERROR - Feature transient_nonexcl_queues is deprecated`.
+
 ### Security
 
 Author: *Bert Berrevoets*

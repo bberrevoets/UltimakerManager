@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.RabbitMQ.Client" Version="13.6.4" />
-        <PackageReference Include="Aspire.Seq" Version="13.6.4" />
+        <PackageReference Include="Aspire.RabbitMQ.Client" Version="13.6.5" />
+        <PackageReference Include="Aspire.Seq" Version="13.6.5" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
         <PackageReference Include="Makaretu.Dns" Version="2.0.1" />
         <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />

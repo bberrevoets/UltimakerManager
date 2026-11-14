@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - @dependabot
 - Claude Opus 4.7 -- co-author of the 2026-04 docs and .NET 10 upgrade
 - Claude Opus 5.5 -- co-author of the 2026-11 AI agent setup
+- Claude Fable 5.2 -- co-author of the 2026-11 Aspire 13.6.5 security upgrade
 
 ## [Unreleased]
 
@@ -70,6 +71,10 @@ Author: *Bert Berrevoets*
   AppHost pulled `MessagePack` 2.5.192 in transitively (`Aspire.Hosting` → `StreamJsonRpc`), which has 2 high and
   10 moderate advisories (fixed from 2.5.303); 13.6.4 brings 2.5.307. Dependabot did not report it because the
   package is transitive only.
+- Upgraded the Aspire stack from 13.6.4 to 13.6.5 (2026-11-14). Dependabot raised `Aspire.Hosting.AppHost` for the
+  high-severity advisory [GHSA-f7vh-h5g3-7jrh](https://github.com/advisories/GHSA-f7vh-h5g3-7jrh) (CVE-2026-120006,
+  Aspire elevation of privilege: dashboard authentication and CLI hardening); `Aspire.AppHost.Sdk` and the other
+  Aspire packages were raised by hand in the same pull request, so the stack stays on one version.
 
 ## [2026-04-30]
 

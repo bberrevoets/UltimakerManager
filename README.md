@@ -59,9 +59,14 @@ configuration key `PrinterRepository:DataPath`.
 - `PrinterDiscoveryService/` — mDNS discovery worker
 - `UltimakerPrinterDeviceManager/` — RMQ consumer + REST poller worker
 - `CHANGELOG.md` — release history
+- `SECURITY.md` — how to report a security problem
 - `AGENTS.md` — instructions for AI coding agents (`CLAUDE.md` only imports it)
 
 For deeper guidance aimed at AI coding agents, see [AGENTS.md](AGENTS.md).
+
+## Security
+
+Found a security problem? Report it privately; [SECURITY.md](SECURITY.md) explains how.
 
 ## License
 

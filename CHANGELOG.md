@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - @dependabot
 - Claude Opus 4.7 -- co-author of the 2026-04 docs and .NET 10 upgrade
 - Claude Opus 5.5 -- co-author of the 2026-11 AI agent setup
-- Claude Fable 5.2 -- co-author of the 2026-11 Aspire 13.6.5 security upgrade
+- Claude Fable 5.2 -- co-author of the 2026-11 Aspire 13.6.5 security upgrade, the security policy and code scanning
 
 ## [Unreleased]
 
@@ -23,6 +23,10 @@ Author: *Bert Berrevoets*
 - `CHANGELOG.md` (this file).
 - Expanded `README.md` covering architecture, prerequisites, run instructions, and repo layout.
 - `UltimakerManager.code-workspace` checked into source control.
+- `SECURITY.md`: the security policy (how to report a vulnerability privately, and what is supported). It clears
+  the "Security policy: Disabled" item on GitHub's Security and quality page.
+- Code scanning: CodeQL default setup for C#, switched on in the repository settings on 2026-11-22 (no workflow
+  file). It clears the "Code scanning alerts: Needs setup" item on the same page.
 
 ### Changed
 

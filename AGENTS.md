@@ -56,8 +56,17 @@ Run from the solution root.
   `dotnet run --project PrinterDiscoveryService` or
   `dotnet run --project UltimakerPrinterDeviceManager`
 
-There is currently no test project and no CI. Docker Desktop must be running because AppHost
+There is currently no test project and no build CI. Docker Desktop must be running because AppHost
 provisions Seq and RabbitMQ as persistent-lifetime containers.
+
+### Security scanning
+
+All of it is set on GitHub, not in a workflow file, so nothing in the repository shows it:
+
+- **Code scanning:** CodeQL default setup for C# (default query suite), on every push and PR to `main` and weekly.
+  It reads the source without building it. Alerts: `gh api repos/bberrevoets/UltimakerManager/code-scanning/alerts`.
+- **Dependabot** alerts and security updates, **secret scanning** with push protection, and **private
+  vulnerability reporting** are enabled. [SECURITY.md](SECURITY.md) is the security policy.
 
 ### RabbitMQ credentials
 

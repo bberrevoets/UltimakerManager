@@ -1,0 +1,25 @@
+SECURITY.md
+  s_ab13d7066b9245::t_7f9b96a06463c5 1-29
+README.md
+  s_ab13d7066b9245::t_22cfd39bf5a878 67-70
+  s_ab13d7066b9245::t_a7261d8b7f9e02 62
+CHANGELOG.md
+  s_ab13d7066b9245::t_13df5cf72eaab9 26-27
+  s_ab13d7066b9245::t_2be491a333a520 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e0336cab7fb1e4f745fd548f3ba5059ba384df8b",
+  "prompts": {},
+  "sessions": {
+    "s_ab13d7066b9245": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3d2932a6-7faf-4c02-8945-c78bfc6c644d",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "B.N. Berrevoets <bert@berrevoets.net>"
+    }
+  }
+}
